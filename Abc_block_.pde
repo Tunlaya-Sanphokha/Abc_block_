@@ -66,8 +66,47 @@ class Board{
      text("J",210,400);
      text("K",360,400);
      text(" ",510,400);
-   
+     mousePressed();
    }
-  
-  
+   void mousePressed(){
+   if(mousePressed){
+     delay(200);
+     if(mouseX > 14 && mouseX < 140 && mouseY > 40 && mouseY <170 ){
+    print("A") ;
+     }
+     if(mouseX > 164 && mouseX < 291 && mouseY > 47 && mouseY <171 ){
+    print("B") ;
+     }
+     if(mouseX > 324 && mouseX < 444 && mouseY > 45 && mouseY <171 ){
+    print("C") ;
+     }
+     if(mouseX > 471 && mouseX < 591 && mouseY > 49 && mouseY <172 ){
+    print("D") ;
+     }
+     if(mouseX > 16 && mouseX < 140 && mouseY > 195 && mouseY < 317 ){
+    print("E") ;
+     }
+     if(mouseX > 166 && mouseX < 290 && mouseY > 197 && mouseY < 317 ){
+    print("F") ;
+     }
+     if(mouseX > 316 && mouseX < 437 && mouseY > 197 && mouseY <318 ){
+    print("G") ;
+     }
+     if(mouseX > 467 && mouseX < 591 && mouseY > 192 && mouseY <319 ){
+    print("H") ;
+     }
+     if(mouseX > 18 && mouseX < 144 && mouseY > 347 && mouseY <468 ){
+    print("I") ;
+     }
+     if(mouseX > 165 && mouseX < 292 && mouseY > 345 && mouseY <468 ){
+    print("J") ;
+     }
+     if(mouseX > 314 && mouseX < 438 && mouseY > 345 && mouseY <462 ){
+    print("K") ;
+     }
+     if(mouseX > 467 && mouseX < 596 && mouseY > 347 && mouseY <471 ){
+    print("--") ;
+     }
+   }
+ }
 } //class Board
