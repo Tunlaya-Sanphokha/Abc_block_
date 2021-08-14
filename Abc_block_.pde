@@ -1,7 +1,6 @@
-int blockSize = 150;
-int row = blockSize;
-int column = blockSize;
-String BoardGame[][] = {{"B","C","H","I"},{"J","A","K","D"},{"E","F","G",""}};
+//int row = blockSize;
+//int column = blockSize;
+String BoardGame[][] = {{"B","C","H","I"},{"J","A","K","D"},{"E","F","G"," "}};
 
 
 void setup (){
@@ -11,11 +10,13 @@ void setup (){
 void draw(){
   draw_map();
   botton();
+  swap_button();
 
 }
 
   
   void draw_map(){
+   int blockSize = 150;
    for(int i = 0 ; i < width/blockSize ; i++){
      for(int j = 0 ; j < height/blockSize ; j ++){
        line(i*150,0,i*150,height);
@@ -66,47 +67,39 @@ void draw(){
      text(BoardGame[2][0],55,400);   //E
      text(BoardGame[2][1],210,400);  //F
      text(BoardGame[2][2],360,400);  //G
-     text(" ",510,400);      
-     mousePressed();
+     text(BoardGame[2][3],510,400);      
+    
    }
-   void mousePressed(){
+
+ 
+  void swap_button(){
+   int row= mouseY/150;
+   int column = mouseX/150;
+   String blank_value = " ";
    if(mousePressed){
-     delay(200);
-     if(mouseX > 14 && mouseX < 140 && mouseY > 40 && mouseY <170 ){
-    print("A") ;
-     }
-     if(mouseX > 164 && mouseX < 291 && mouseY > 47 && mouseY <171 ){
-    print("B") ;
-     }
-     if(mouseX > 324 && mouseX < 444 && mouseY > 45 && mouseY <171 ){
-    print("C") ;
-     }
-     if(mouseX > 471 && mouseX < 591 && mouseY > 49 && mouseY <172 ){
-    print("D") ;
-     }
-     if(mouseX > 16 && mouseX < 140 && mouseY > 195 && mouseY < 317 ){
-    print("E") ;
-     }
-     if(mouseX > 166 && mouseX < 290 && mouseY > 197 && mouseY < 317 ){
-    print("F") ;
-     }
-     if(mouseX > 316 && mouseX < 437 && mouseY > 197 && mouseY <318 ){
-    print("G") ;
-     }
-     if(mouseX > 467 && mouseX < 591 && mouseY > 192 && mouseY <319 ){
-    print("H") ;
-     }
-     if(mouseX > 18 && mouseX < 144 && mouseY > 347 && mouseY <468 ){
-    print("I") ;
-     }
-     if(mouseX > 165 && mouseX < 292 && mouseY > 345 && mouseY <468 ){
-    print("J") ;
-     }
-     if(mouseX > 314 && mouseX < 438 && mouseY > 345 && mouseY <462 ){
-    print("K") ;
-     }
-     if(mouseX > 467 && mouseX < 596 && mouseY > 347 && mouseY <471 ){
-    print("--") ;
-     }
-   }
- }
+     try{
+       if(row+1 <= 2 && BoardGame[row+1][column].equals(" ")){        //move down
+         blank_value = BoardGame[row][column];
+         BoardGame[row][column] = BoardGame[row+1][column];
+         BoardGame[row+1][column] = blank_value;
+     }  //if
+     else if(row-1 >= 0 && BoardGame[row-1][column].equals(" ")){           //move up
+       blank_value = BoardGame[row][column];
+       BoardGame[row][column] = BoardGame[row-1][column];
+       BoardGame[row-1][column] = blank_value;
+     }  //else if
+     else if (column+1 <= 3 && BoardGame[row][column+1].equals(" ")){         //move right
+       blank_value = BoardGame[row][column];
+       BoardGame[row][column] = BoardGame[row][column+1];
+       BoardGame[row][column+1] = blank_value;
+     }  //else if
+     else if (column-1 >= 0 && BoardGame[row][column-1].equals(" ")){       //move left
+       blank_value = BoardGame[row][column];
+       BoardGame[row][column] = BoardGame[row][column-1];
+       BoardGame[row][column-1] = blank_value;
+   }   //else if
+   }   //try
+   catch (Exception e){
+   }  
+   }  // if mousePressed
+ }  // void swap_button
