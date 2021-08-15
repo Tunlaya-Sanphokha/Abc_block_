@@ -1,20 +1,18 @@
-//int row = blockSize;
-//int column = blockSize;
-String BoardGame[][] = {{"B","C","H","I"},{"J","A","K","D"},{"E","F","G"," "}};
-
+import java.util.Arrays;
+String BoardGame[][]  = {{"A","B","C","D"},{"E","F","G","H"},{"I","J"," ","K"}};
+String BoardGame_Correct[][] = {{"A","B","C","D"},{"E","F","G","H"},{"I","J","K"," "}};
 
 void setup (){
  size(600,450);
- background(145);
+ background(30, 144, 255);
 }
 void draw(){
   draw_map();
   botton();
   swap_button();
+  Check_winner();
 
 }
-
-  
   void draw_map(){
    int blockSize = 150;
    for(int i = 0 ; i < width/blockSize ; i++){
@@ -22,8 +20,6 @@ void draw(){
        line(i*150,0,i*150,height);
        line(0,j*150,width,j*150);
        
-       
-    
       } // if j
      }  //if i
     }  //if draw_map
@@ -70,36 +66,56 @@ void draw(){
      text(BoardGame[2][3],510,400);      
     
    }
-
- 
+   
   void swap_button(){
    int row= mouseY/150;
    int column = mouseX/150;
    String blank_value = " ";
+   //Check_winner();
    if(mousePressed){
      try{
        if(row+1 <= 2 && BoardGame[row+1][column].equals(" ")){        //move down
          blank_value = BoardGame[row][column];
          BoardGame[row][column] = BoardGame[row+1][column];
          BoardGame[row+1][column] = blank_value;
+         Check_winner();
      }  //if
      else if(row-1 >= 0 && BoardGame[row-1][column].equals(" ")){           //move up
        blank_value = BoardGame[row][column];
        BoardGame[row][column] = BoardGame[row-1][column];
        BoardGame[row-1][column] = blank_value;
+       Check_winner();
      }  //else if
      else if (column+1 <= 3 && BoardGame[row][column+1].equals(" ")){         //move right
        blank_value = BoardGame[row][column];
        BoardGame[row][column] = BoardGame[row][column+1];
        BoardGame[row][column+1] = blank_value;
+       Check_winner();
      }  //else if
      else if (column-1 >= 0 && BoardGame[row][column-1].equals(" ")){       //move left
        blank_value = BoardGame[row][column];
        BoardGame[row][column] = BoardGame[row][column-1];
        BoardGame[row][column-1] = blank_value;
+       Check_winner();
    }   //else if
    }   //try
    catch (Exception e){
    }  
    }  // if mousePressed
  }  // void swap_button
+ 
+ void Check_winner(){
+   if (Arrays.deepEquals(BoardGame,BoardGame_Correct)){
+     window_win();
+     //print("Win");
+   }
+   else{
+     //print("Lose");
+   }
+ }
+ void window_win(){
+  size(600,450);
+  background(255, 140, 0);  //orange
+  fill(255);             // text color
+  text("You Win",200,230);
+}
