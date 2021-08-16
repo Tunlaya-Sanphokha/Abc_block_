@@ -1,10 +1,12 @@
 import java.util.Arrays;
 String BoardGame[][]  = {{"A","B","C","D"},{"E","F","G","H"},{"I","J"," ","K"}};
 String BoardGame_Correct[][] = {{"A","B","C","D"},{"E","F","G","H"},{"I","J","K"," "}};
+String SaveBoard[] = {"A","B","C","D","E","F","G","H","I","J","K"," "};
 
 void setup (){
  size(600,450);
  background(30, 144, 255);
+ load_game();
 }
 void draw(){
   draw_map();
@@ -97,7 +99,9 @@ void draw(){
        BoardGame[row][column] = BoardGame[row][column-1];
        BoardGame[row][column-1] = blank_value;
        Check_winner();
-   }   //else if
+   } 
+   save_game();
+   //else if
    }   //try
    catch (Exception e){
    }  
@@ -107,10 +111,6 @@ void draw(){
  void Check_winner(){
    if (Arrays.deepEquals(BoardGame,BoardGame_Correct)){
      window_win();
-     //print("Win");
-   }
-   else{
-     //print("Lose");
    }
  }
  void window_win(){
@@ -118,4 +118,54 @@ void draw(){
   background(255, 140, 0);  //orange
   fill(255);             // text color
   text("You Win",200,230);
+  
+  
 }
+
+void save_game(){
+  int tmp = 0;
+  for(int i = 0 ; i < 3; i++){
+    for(int j = 0; j < 4; j++){
+      SaveBoard[tmp] = BoardGame[i][j];
+      tmp++;
+    }
+  }
+  saveStrings("saveGame.txt",SaveBoard);
+}
+
+void load_game(){
+  try{
+    String save_board[] = loadStrings("saveGame.txt");
+    int tmp = 0;
+    for(int i = 0; i < 3; i++){
+      for(int j = 0; j < 4; j++){
+        BoardGame[i][j] = save_board[tmp];
+        tmp++;
+      }
+    }
+    if(Arrays.deepEquals(BoardGame,BoardGame_Correct)){
+      random_board();
+    } 
+  }
+  catch(Exception e){
+    save_game();
+    random_board();
+  } 
+}
+void random_board(){
+  String SaveBoard[] = {"A","B","C","D","E","F","G","H","I","J","K"," "};
+  StringList board = new StringList();
+  for (int i = 0; i<12; i++){
+  board.append(SaveBoard[i]);
+  }
+  board.shuffle();
+  String random_board[] = board.array();
+  int tmp = 0;
+  for (int i = 0; i < 3; i++){
+    for (int j = 0; j < 4; j++){
+      BoardGame[i][j] = random_board[tmp];
+      tmp += 1;
+    }
+  }
+}
+  
