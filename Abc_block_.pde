@@ -2,6 +2,7 @@ import java.util.Arrays;
 String BoardGame[][]  = {{"A","B","C","D"},{"E","F","G","H"},{"I","J"," ","K"}};
 String BoardGame_Correct[][] = {{"A","B","C","D"},{"E","F","G","H"},{"I","J","K"," "}};
 String SaveBoard[] = {"A","B","C","D","E","F","G","H","I","J","K"," "};
+XML xml;
 
 void setup (){
  size(600,450);
@@ -73,32 +74,27 @@ void draw(){
    int row= mouseY/150;
    int column = mouseX/150;
    String blank_value = " ";
-   //Check_winner();
    if(mousePressed){
      try{
        if(row+1 <= 2 && BoardGame[row+1][column].equals(" ")){        //move down
          blank_value = BoardGame[row][column];
          BoardGame[row][column] = BoardGame[row+1][column];
          BoardGame[row+1][column] = blank_value;
-         Check_winner();
      }  //if
      else if(row-1 >= 0 && BoardGame[row-1][column].equals(" ")){           //move up
        blank_value = BoardGame[row][column];
        BoardGame[row][column] = BoardGame[row-1][column];
        BoardGame[row-1][column] = blank_value;
-       Check_winner();
      }  //else if
      else if (column+1 <= 3 && BoardGame[row][column+1].equals(" ")){         //move right
        blank_value = BoardGame[row][column];
        BoardGame[row][column] = BoardGame[row][column+1];
        BoardGame[row][column+1] = blank_value;
-       Check_winner();
      }  //else if
      else if (column-1 >= 0 && BoardGame[row][column-1].equals(" ")){       //move left
        blank_value = BoardGame[row][column];
        BoardGame[row][column] = BoardGame[row][column-1];
        BoardGame[row][column-1] = blank_value;
-       Check_winner();
    } 
    save_game();
    //else if
@@ -118,28 +114,38 @@ void draw(){
   background(255, 140, 0);  //orange
   fill(255);             // text color
   text("You Win",200,230);
-  
-  
 }
 
 void save_game(){
-  int tmp = 0;
-  for(int i = 0 ; i < 3; i++){
-    for(int j = 0; j < 4; j++){
-      SaveBoard[tmp] = BoardGame[i][j];
-      tmp++;
+  try{
+    XML[] SaveBoard = xml.getChildren("value");
+    int tmp = 0;
+    for(int i = 0 ; i < 3; i++){
+      for(int j = 0; j < 4; j++){
+        SaveBoard[tmp].setContent(BoardGame[i][j]);
+        tmp++;
+    saveXML(xml,"saveGame.xml");
+      }
     }
   }
-  saveStrings("saveGame.txt",SaveBoard);
-}
+  catch(Exception e){
+    xml = new XML("ABC_Block");
+    for(int i= 0;i<12;i+=1){
+    XML save = xml.addChild("value");
+      save.setContent(SaveBoard[i]);
+      saveXML(xml, "saveGame.xml") ;
+    }
 
+  }
+}
 void load_game(){
   try{
-    String save_board[] = loadStrings("saveGame.txt");
+    xml = loadXML("saveGame.xml");
+    XML[] save_board = xml.getChildren("value");
     int tmp = 0;
     for(int i = 0; i < 3; i++){
       for(int j = 0; j < 4; j++){
-        BoardGame[i][j] = save_board[tmp];
+        BoardGame[i][j] = save_board[tmp].getContent();
         tmp++;
       }
     }
@@ -153,20 +159,18 @@ void load_game(){
   } 
 }
 void random_board(){
-  String SaveBoard[] = {"A","B","C","D","E","F","G","H","I","J","K"," "};
+  String Board[] = {"A","B","C","D","E","F","G","H","I","J","K"," "};
   StringList board = new StringList();
   for (int i = 0; i<12; i++){
-  board.append(SaveBoard[i]);
+  board.append(Board[i]);
   }
   board.shuffle();
-  String random_board[] = board.array();
+  String random_board_game[] = board.array();
   int tmp = 0;
   for (int i = 0; i < 3; i++){
     for (int j = 0; j < 4; j++){
-      BoardGame[i][j] = random_board[tmp];
+      BoardGame[i][j] = random_board_game[tmp];
       tmp += 1;
     }
   }
 }
-
-  
